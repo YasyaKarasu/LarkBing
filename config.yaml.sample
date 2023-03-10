@@ -1,0 +1,9 @@
+feishu:
+  appId:
+  appSecret:
+  verificationToken:
+  encryptKey:
+  larkHost: "https://open.feishu.cn"
+
+server:
+  port:
