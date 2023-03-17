@@ -3,6 +3,7 @@ package bing
 import (
 	"context"
 	"encoding/json"
+	"net/http"
 	"xlab-feishu-robot/config"
 	"xlab-feishu-robot/pkg/session"
 
@@ -27,7 +28,7 @@ func New() *BingClient {
 
 	response, err := reqCli.Request(context.Background(), "get", "https://www.bing.com/turing/conversation/create",
 		requests.RequestOption{
-			Cookies: map[string]string{"_U": config.C.Bing.Cookie},
+			Cookies: http.Cookie{Name: "_U", Value: config.C.Bing.Cookie},
 		},
 	)
 	if err != nil {
