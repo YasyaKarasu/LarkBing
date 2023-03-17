@@ -1,6 +1,7 @@
 package receiveMessage
 
 import (
+	"encoding/json"
 	"xlab-feishu-robot/pkg/global"
 	messageCardDispatcher "xlab-feishu-robot/pkg/message_card_dispatcher"
 	"xlab-feishu-robot/pkg/session"
@@ -78,8 +79,9 @@ func p2pHelpMenu(messageevent *MessageEvent) {
 		}
 	  }`
 	mid, _ := global.Cli.MessageSend(feishuapi.UserOpenId, messageevent.Sender.Sender_id.Open_id, feishuapi.Interactive, content)
-	session.SetSession(mid, messageCardDispatcher.MessageCardState{
+	bytes, _ := json.Marshal(messageCardDispatcher.MessageCardState{
 		OperatorId: messageevent.Sender.Sender_id.Open_id,
 		ChatType:   "p2p",
 	})
+	session.SetSession(mid, string(bytes))
 }
