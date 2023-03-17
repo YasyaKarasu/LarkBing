@@ -1,4 +1,4 @@
-package message_card_dispatcher
+package messageCardDispatcher
 
 import "encoding/json"
 

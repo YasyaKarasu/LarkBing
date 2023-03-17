@@ -1,4 +1,4 @@
-package event_dispatcher
+package eventDispatcher
 
 import "github.com/sirupsen/logrus"
 

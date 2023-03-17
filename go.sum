@@ -46,6 +46,10 @@ github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 h1:d+Bc7a5rLufV
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578/go.mod h1:uGdkoq3SwY9Y+13GIhn11/XLaGBb4BfwItxLd5jeuXE=
 github.com/YasyaKarasu/feishuapi v1.2.3 h1:z0H60hbFTHtfaGQ7s5rI/zosRU3YNsQB7ID0WR9zifM=
 github.com/YasyaKarasu/feishuapi v1.2.3/go.mod h1:sn5gDUIBia/nJ8youGp6wuz5nwAl0fbY0+y99VnUl7Y=
+github.com/YasyaKarasu/feishuapi v1.2.4 h1:KGwV7PbqF2HBBrIL8xrRcOV0oMl6yALooQcptIc1wWk=
+github.com/YasyaKarasu/feishuapi v1.2.4/go.mod h1:sn5gDUIBia/nJ8youGp6wuz5nwAl0fbY0+y99VnUl7Y=
+github.com/YasyaKarasu/feishuapi v1.2.5 h1:Ctnm4eaMR9zhf69aEjpdX4VX70S9/eY1oqWonTxW2KM=
+github.com/YasyaKarasu/feishuapi v1.2.5/go.mod h1:sn5gDUIBia/nJ8youGp6wuz5nwAl0fbY0+y99VnUl7Y=
 github.com/agiledragon/gomonkey/v2 v2.3.1/go.mod h1:ap1AmDzcVOAz1YpeJ3TCzIgstoaWLA6jbbgxfB4w2iY=
 github.com/bsm/ginkgo/v2 v2.5.0 h1:aOAnND1T40wEdAtkGSkvSICWeQ8L3UASX7YVCqQx+eQ=
 github.com/bsm/gomega v1.20.0 h1:JhAwLmtRzXFTx2AkALSLa8ijZafntmhSoU63Ok18Uq8=

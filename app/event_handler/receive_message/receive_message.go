@@ -2,6 +2,8 @@ package receiveMessage
 
 import (
 	"encoding/json"
+	"xlab-feishu-robot/pkg/session"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -44,6 +46,13 @@ type MessageEvent struct {
 func Receive(event map[string]any) {
 	messageevent := MessageEvent{}
 	map2struct(event, &messageevent)
+
+	if session.QueryMessageID(messageevent.Message.Message_id) {
+		logrus.WithField("messageID", messageevent.Message.Message_id).Warn("Receive repeated message")
+		return
+	}
+	session.StoreMessageID(messageevent.Message.Message_id)
+
 	switch messageevent.Message.Chat_type {
 	case "p2p":
 		p2p(&messageevent)

@@ -1,4 +1,4 @@
-package event_dispatcher
+package eventDispatcher
 
 // set of event ids
 var eventIdList = make(map[string]bool)
