@@ -3,6 +3,7 @@ package messageCardDispatcher
 import (
 	"io"
 	"net/http"
+	receiveButton "xlab-feishu-robot/app/event_handler/receive_button"
 	"xlab-feishu-robot/pkg/session"
 
 	"github.com/gin-gonic/gin"
@@ -35,6 +36,7 @@ func Dispatcher(c *gin.Context) {
 	}
 
 	// dispatch events
+	receiveButton.Receive(req.OpenMessageId, req.Action)
 }
 
 func requestRepeatDetect(c *gin.Context) bool {

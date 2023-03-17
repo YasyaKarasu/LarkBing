@@ -2,13 +2,17 @@ package receiveButton
 
 import (
 	"encoding/json"
-	messageCardDispatcher "xlab-feishu-robot/pkg/message_card_dispatcher"
 	"xlab-feishu-robot/pkg/session"
 )
 
+type messageCardState struct {
+	OperatorId string
+	ChatType   string
+}
+
 func Receive(OpenMessageId string, action map[string]any) {
 	value := action["value"].(map[string]string)
-	var messageState messageCardDispatcher.MessageCardState
+	var messageState messageCardState
 	json.Unmarshal([]byte(session.GetSession(OpenMessageId)), &messageState)
 	send(OpenMessageId, value, messageState)
 }
