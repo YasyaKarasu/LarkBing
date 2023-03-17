@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	p2pMessageRegister(p2pHelpMenu, "help")
+	p2pMessageRegister(p2pHelpMenu, "/help")
 }
 
 func p2pHelpMenu(messageevent *MessageEvent) {

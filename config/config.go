@@ -17,6 +17,9 @@ type Config struct {
 	Server struct {
 		Port int
 	}
+	Bing struct {
+		Cookie string
+	}
 }
 
 var C Config

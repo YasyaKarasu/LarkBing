@@ -1,8 +1,9 @@
 package receiveMessage
 
 import (
-	"github.com/sirupsen/logrus"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 var p2pMessageMap = make(map[string]messageHandler)
@@ -22,9 +23,10 @@ func p2pTextMessage(messageevent *MessageEvent) {
 	logrus.WithFields(logrus.Fields{"message content": messageevent.Message.Content}).Info("Receive p2p TEXT message")
 
 	if handler, exists := p2pMessageMap[messageevent.Message.Content]; exists {
-		handler(messageevent)
+		go handler(messageevent)
 		return
 	} else {
+		go p2pChat(messageevent)
 		logrus.Error("p2p message failed to find event handler: ", messageevent.Message.Content)
 		return
 	}

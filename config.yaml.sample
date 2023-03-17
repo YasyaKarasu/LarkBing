@@ -4,6 +4,12 @@ feishu:
   verificationToken:
   encryptKey:
   larkHost: "https://open.feishu.cn"
-
+redis:
+  host:
+  port:
+  password:
+  db:
 server:
   port:
+bing:
+  cookie:
