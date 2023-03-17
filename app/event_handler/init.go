@@ -2,7 +2,7 @@ package eventHandler
 
 import (
 	receiveMessage "xlab-feishu-robot/app/event_handler/receive_message"
-	"xlab-feishu-robot/pkg/eventDispatcher"
+	eventDispatcher "xlab-feishu-robot/pkg/event_dispatcher"
 )
 
 func Init() {
