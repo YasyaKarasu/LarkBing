@@ -1,13 +1,13 @@
 package bing
 
 import (
-	"context"
 	"encoding/json"
+	"io"
 	"net/http"
+	"time"
 	"xlab-feishu-robot/config"
 	"xlab-feishu-robot/pkg/session"
 
-	"gitee.com/baixudong/gospider/requests"
 	"github.com/sirupsen/logrus"
 )
 
@@ -19,28 +19,38 @@ type BingClient struct {
 }
 
 func New() *BingClient {
-	reqCli, err := requests.NewClient(context.Background())
-	if err != nil {
-		logrus.Error(err)
-		return nil
-	}
-	defer reqCli.Close()
-
-	response, err := reqCli.Request(context.Background(), "get", "https://www.bing.com/turing/conversation/create",
-		requests.RequestOption{
-			Cookies: http.Cookie{Name: "_U", Value: config.C.Bing.Cookie},
-		},
-	)
+	req, err := http.NewRequest("GET", "https://www.bing.com/turing/conversation/create", nil)
 	if err != nil {
 		logrus.Error(err)
 		return nil
 	}
 
-	jsonData := response.Json()
+	req.AddCookie(&http.Cookie{Name: "_U", Value: config.C.Bing.Cookie})
+
+	cli := &http.Client{
+		Timeout: time.Second * 15,
+	}
+
+	resp, err := cli.Do(req)
+	if err != nil {
+		logrus.Error(err)
+		return nil
+	}
+	defer resp.Body.Close()
+
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		logrus.Error(err)
+		return nil
+	}
+
+	var result map[string]interface{}
+	json.Unmarshal(respBody, &result)
+
 	return &BingClient{
-		ConversationID:        jsonData.Get("conversationId").String(),
-		ConversationSignature: jsonData.Get("conversationSignature").String(),
-		ClientID:              jsonData.Get("clientId").String(),
+		ConversationID:        result["conversationId"].(string),
+		ConversationSignature: result["conversationSignature"].(string),
+		ClientID:              result["clientId"].(string),
 		IsStartofSession:      true,
 	}
 }
