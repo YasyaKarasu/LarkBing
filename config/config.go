@@ -8,16 +8,14 @@ import (
 
 type Config struct {
 	Feishu feishuapi.Config
+	Redis  struct {
+		Host     string
+		Port     int
+		Password string
+		DB       int
+	}
 	Server struct {
 		Port int
-
-		// add your configuration fields here
-		ExampleField1 string
-	}
-
-	// add your configuration fields here
-	ExampleField2 struct {
-		ExampleField3 int
 	}
 }
 

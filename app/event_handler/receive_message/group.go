@@ -7,7 +7,7 @@ import (
 
 var groupMessageMap = make(map[string]messageHandler)
 
-func group(messageevent *MessageEvent){
+func group(messageevent *MessageEvent) {
 	switch strings.ToUpper(messageevent.Message.Message_type) {
 	case "TEXT":
 		groupTextMessage(messageevent)
@@ -16,7 +16,7 @@ func group(messageevent *MessageEvent){
 	}
 }
 
-func groupTextMessage(messageevent *MessageEvent){
+func groupTextMessage(messageevent *MessageEvent) {
 	// get the pure text message, without @xxx
 	messageevent.Message.Content = strings.TrimSuffix(strings.TrimPrefix(messageevent.Message.Content, "{\"text\":\""), "\"}")
 	messageevent.Message.Content = messageevent.Message.Content[strings.Index(messageevent.Message.Content, " ")+1:]
@@ -32,7 +32,7 @@ func groupTextMessage(messageevent *MessageEvent){
 }
 
 func groupMessageRegister(f messageHandler, s string) {
-	
+
 	if _, isEventExist := groupMessageMap[s]; isEventExist {
 		logrus.Warning("Double declaration of group message handler: ", s)
 	}

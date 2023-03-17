@@ -1,4 +1,4 @@
-package dispatcher
+package event_dispatcher
 
 import (
 	"encoding/json"

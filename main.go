@@ -6,6 +6,8 @@ import (
 	"xlab-feishu-robot/config"
 	"xlab-feishu-robot/docs"
 	"xlab-feishu-robot/pkg/global"
+	"xlab-feishu-robot/pkg/session"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	swaggerfiles "github.com/swaggo/files"
@@ -22,6 +24,8 @@ func main() {
 	// feishu api client
 	config.SetupFeishuApiClient(&global.Cli)
 	global.Cli.StartTokenTimer()
+
+	session.ConnectRedis()
 
 	// robot server
 	r := gin.Default()
