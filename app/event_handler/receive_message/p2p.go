@@ -27,7 +27,7 @@ func p2pTextMessage(messageevent *MessageEvent) {
 		return
 	} else {
 		go p2pChat(messageevent)
-		logrus.Error("p2p message failed to find event handler: ", messageevent.Message.Content)
+		// logrus.Error("p2p message failed to find event handler: ", messageevent.Message.Content)
 		return
 	}
 }
