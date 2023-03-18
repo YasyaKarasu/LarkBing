@@ -138,9 +138,9 @@ func (c *BingClient) Chat(question string) {
 			logrus.Error(err)
 			break
 		}
-		logrus.Info("receive message content: ", msgContent)
 		if msgType == websocket.MessageText {
 			msgData := tools.Any2json(msgContent)
+			logrus.Info("receive msgData: ", msgData)
 			switch msgData.Get("type").Int() {
 			case 1:
 				text := msgData.Get("arguments.0.messages.text").String()
