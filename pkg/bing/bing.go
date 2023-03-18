@@ -46,6 +46,7 @@ func (c *BingClient) DefaultMessageData() *MessageData {
 					"nlu_direct_response_filter",
 					"deepleo",
 					"enable_debug_commands",
+					"disable_emoji_spoken_text",
 					"responsible_ai_policy_235",
 					"enablemm",
 				},
@@ -95,7 +96,7 @@ func (c *BingClient) Chat(question string) {
 
 	wsCli := response.WebSocket()
 
-	err = wsCli.Conn().Write(
+	err = wsCli.Send(
 		context.Background(),
 		websocket.MessageText,
 		append(tools.StringToBytes(`{"protocol":"json","version":1}`), 0x1e),
@@ -105,7 +106,9 @@ func (c *BingClient) Chat(question string) {
 		return
 	}
 
-	err = wsCli.Conn().Write(
+	wsCli.Recv(context.Background())
+
+	err = wsCli.Send(
 		context.Background(),
 		websocket.MessageText,
 		append(tools.StringToBytes(`{"type":6}`), 0x1e),
@@ -117,7 +120,8 @@ func (c *BingClient) Chat(question string) {
 
 	data := make(map[string]any)
 	struct2map(c.DefaultMessageData().WithText(question), &data)
-	err = wsCli.Conn().Write(
+	logrus.Info("send data: ", data)
+	err = wsCli.Send(
 		context.Background(),
 		websocket.MessageText,
 		append(tools.StringToBytes(tools.Any2json(data).Raw), 0x1e),
@@ -129,11 +133,12 @@ func (c *BingClient) Chat(question string) {
 
 	run := true
 	for run {
-		msgType, msgContent, err := wsCli.Conn().Read(context.Background())
+		msgType, msgContent, err := wsCli.Recv(context.Background())
 		if err != nil {
 			logrus.Error(err)
 			break
 		}
+		logrus.Info("receive message content: ", msgContent)
 		if msgType == websocket.MessageText {
 			msgData := tools.Any2json(msgContent)
 			switch msgData.Get("type").Int() {

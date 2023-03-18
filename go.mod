@@ -3,7 +3,7 @@ module xlab-feishu-robot
 go 1.19
 
 require (
-	gitee.com/baixudong/gospider v0.0.0-20230317132422-f0f59137ffca
+	gitee.com/baixudong/gospider v0.0.0-20230318015255-2ff94611f024
 	github.com/YasyaKarasu/feishuapi v1.2.5
 	github.com/gin-gonic/gin v1.9.0
 	github.com/redis/go-redis/v9 v9.0.2
