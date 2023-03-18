@@ -118,13 +118,13 @@ func (c *BingClient) Chat(question string) {
 		return
 	}
 
-	data := make(map[string]any)
-	struct2map(c.DefaultMessageData().WithText(question), &data)
-	logrus.Info("send data: ", data)
+	data := c.DefaultMessageData().WithText(question)
+	logrus.Info("send data: ", *data)
+	b, _ := json.Marshal(data)
 	err = wsCli.Send(
 		context.Background(),
 		websocket.MessageText,
-		append(tools.StringToBytes(tools.Any2json(data).Raw), 0x1e),
+		append(b, 0x1e),
 	)
 	if err != nil {
 		logrus.Error(err)
@@ -154,7 +154,7 @@ func (c *BingClient) Chat(question string) {
 	}
 }
 
-func struct2map(s any, m any) {
-	b, _ := json.Marshal(s)
-	json.Unmarshal(b, m)
-}
+// func struct2map(s any, m any) {
+// 	b, _ := json.Marshal(s)
+// 	json.Unmarshal(b, m)
+// }
