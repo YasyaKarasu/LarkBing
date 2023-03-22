@@ -16,10 +16,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func init() {
-	bing.RegisterChatResponseHandler(SendCard)
-}
-
 func generateCard(item bing.Item, updating bool) string {
 	type element struct {
 		tag  string

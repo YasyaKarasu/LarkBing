@@ -4,7 +4,9 @@ import (
 	"LarkBing/app"
 	"LarkBing/config"
 	"LarkBing/docs"
+	"LarkBing/pkg/bing"
 	"LarkBing/pkg/global"
+	messageCard "LarkBing/pkg/message_card"
 	"LarkBing/pkg/session"
 	"fmt"
 
@@ -20,6 +22,8 @@ func main() {
 	// log
 	config.SetupLogrus()
 	logrus.Info("Robot starts up")
+
+	bing.RegisterChatResponseHandler(messageCard.SendCard)
 
 	// feishu api client
 	config.SetupFeishuApiClient(&global.Cli)
