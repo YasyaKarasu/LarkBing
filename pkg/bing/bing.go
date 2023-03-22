@@ -81,7 +81,9 @@ func (data *MessageData) WithText(text string) *MessageData {
 }
 
 func (c *BingClient) Chat(question string) {
-	reqCli, err := requests.NewClient(context.Background())
+	reqCli, err := requests.NewClient(context.Background(), requests.ClientOption{
+		Proxy: "http://127.0.0.1:7890",
+	})
 	if err != nil {
 		logrus.Error(err)
 		return
