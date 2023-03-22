@@ -158,8 +158,7 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 			case 1:
 				var chatResponse ChatResponse
 				type ChatUpdateArgument struct {
-					Messages  []ChatMessage `json:"messages"`
-					RequestID string        `json:"requestId"`
+					Messages []ChatMessage `json:"messages"`
 				}
 				type ChatUpdate struct {
 					Type      int                  `json:"type"`
@@ -170,7 +169,7 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 				json.Unmarshal(msgContent, &chatUpdate)
 				chatResponse.Item = Item{
 					Messages:  chatUpdate.Arguments[0].Messages,
-					RequestID: chatUpdate.Arguments[0].RequestID,
+					RequestID: chatUpdate.Arguments[0].Messages[0].RequestID,
 				}
 				chatItemHandler(ctx, chatResponse.Item, true)
 			case 2:

@@ -16,6 +16,7 @@ type ChatMessage struct {
 	MessageType        string              `json:"messageType"`
 	SourceAttributions []SourceAttribution `json:"sourceAttributions"`
 	SuggestedResponses []SuggestedResponse `json:"suggestedResponses"`
+	RequestID          string              `json:"requestId"`
 }
 
 type Item struct {
