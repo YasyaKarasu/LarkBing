@@ -20,14 +20,14 @@ type ChatParticipant struct {
 }
 
 type MessageArgument struct {
-	Source                string            `json:"source"`
-	OptionsSets           []string          `json:"optionsSets"`
-	AllowedMessageTypes   []string          `json:"allowedMessageTypes"`
-	IsStartofSession      bool              `json:"isStartOfSession"`
-	Message               Message           `json:"message"`
-	ConversationSignature string            `json:"conversationSignature"`
-	Participant           []ChatParticipant `json:"participant"`
-	ConversationID        string            `json:"conversationId"`
+	Source                string          `json:"source"`
+	OptionsSets           []string        `json:"optionsSets"`
+	AllowedMessageTypes   []string        `json:"allowedMessageTypes"`
+	IsStartofSession      bool            `json:"isStartOfSession"`
+	Message               Message         `json:"message"`
+	ConversationSignature string          `json:"conversationSignature"`
+	Participant           ChatParticipant `json:"participant"`
+	ConversationID        string          `json:"conversationId"`
 }
 
 type MessageData struct {
@@ -65,7 +65,7 @@ func (c *BingClient) DefaultMessageData() *MessageData {
 				IsStartofSession:      c.IsStartofSession,
 				Message:               Message{Text: "", MessageType: "Chat"},
 				ConversationSignature: c.ConversationSignature,
-				Participant:           []ChatParticipant{{ID: c.ClientID}},
+				Participant:           ChatParticipant{ID: c.ClientID},
 				ConversationID:        c.ConversationID,
 			},
 		},
