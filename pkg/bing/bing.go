@@ -160,25 +160,20 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 				json.Unmarshal(msgContent, &chatResponse)
 				if len(chatResponse.Item.Messages) == 0 {
 					type temp struct {
-						Item Item `json:"arguments"`
+						Arguments []ChatMessage `json:"arguments"`
 					}
 					var t temp
 					json.Unmarshal(msgContent, &t)
-					chatResponse.Item = t.Item
+					chatResponse.Item = Item{
+						Messages:  t.Arguments,
+						RequestID: t.Arguments[0].RequestID,
+					}
 				}
 				chatItemHandler(ctx, chatResponse.Item, true)
 			case 2:
 				run = false
 				var chatResponse ChatResponse
 				json.Unmarshal(msgContent, &chatResponse)
-				if len(chatResponse.Item.Messages) == 0 {
-					type temp struct {
-						Item Item `json:"arguments"`
-					}
-					var t temp
-					json.Unmarshal(msgContent, &t)
-					chatResponse.Item = t.Item
-				}
 				chatItemHandler(ctx, chatResponse.Item, false)
 			}
 		}
