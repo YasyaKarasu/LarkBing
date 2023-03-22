@@ -25,7 +25,7 @@ func New() *BingClient {
 	if err != nil {
 		log.Panic(err)
 	}
-	response, err := reqCli.Request(context.Background(), "get", "https://www.bing.com/turing/conversation/create", requests.RequestOption{
+	response, err := reqCli.Request(context.Background(), "get", "https://edgeservices.bing.com/edgesvc/turing/conversation/create", requests.RequestOption{
 		Cookies: map[string]string{"_U": config.C.Bing.Cookie},
 	})
 	if err != nil {
