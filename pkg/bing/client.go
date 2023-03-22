@@ -46,7 +46,7 @@ func New() *BingClient {
 }
 
 func GetBingClient(ID string) *BingClient {
-	clientRaw := session.GetSession(ID)
+	clientRaw := session.GetSessionString(ID)
 	if clientRaw == "" {
 		client := New()
 		bytes, _ := json.Marshal(client)

@@ -13,6 +13,6 @@ type messageCardState struct {
 func Receive(OpenMessageId string, action map[string]any) {
 	value := action["value"].(map[string]any)
 	var messageState messageCardState
-	json.Unmarshal([]byte(session.GetSession(OpenMessageId)), &messageState)
+	json.Unmarshal([]byte(session.GetSessionString(OpenMessageId)), &messageState)
 	send(OpenMessageId, value, messageState)
 }

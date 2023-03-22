@@ -41,9 +41,9 @@ func Dispatcher(c *gin.Context) {
 
 func requestRepeatDetect(c *gin.Context) bool {
 	refreshToken := c.Request.Header.Get("X-Refresh-Token")
-	storedToken := session.GetSession(refreshToken)
-	if storedToken == "" {
-		session.SetSession(refreshToken, "true")
+	_, ok := session.GetSessionBool(refreshToken)
+	if ok {
+		session.SetSession(refreshToken, true)
 		return false
 	} else {
 		return true

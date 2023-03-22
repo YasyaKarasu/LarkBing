@@ -17,7 +17,7 @@ func SetSession(key string, value any) error {
 	return nil
 }
 
-func GetSession(key string) string {
+func GetSessionString(key string) string {
 	content, err := redisClient.Get(context.Background(), key).Result()
 	if err == redis.Nil {
 		logrus.WithField("ID", key).Warn("key does not exist")
@@ -27,6 +27,19 @@ func GetSession(key string) string {
 		return ""
 	} else {
 		return content
+	}
+}
+
+func GetSessionBool(key string) (bool, bool) {
+	content, err := redisClient.Get(context.Background(), key).Bool()
+	if err == redis.Nil {
+		logrus.WithField("ID", key).Warn("key does not exist")
+		return false, false
+	} else if err != nil {
+		logrus.WithField("ID", key).Error(err)
+		return false, false
+	} else {
+		return content, true
 	}
 }
 

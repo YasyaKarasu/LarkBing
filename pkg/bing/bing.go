@@ -86,7 +86,15 @@ func (data *MessageData) WithInvocationID(id int) *MessageData {
 	return data
 }
 
-func (c *BingClient) Chat(question string) {
+type ChatItemHandler func(context.Context, Item, bool)
+
+var chatItemHandler ChatItemHandler
+
+func RegisterChatResponseHandler(handler ChatItemHandler) {
+	chatItemHandler = handler
+}
+
+func (c *BingClient) Chat(ctx context.Context, question string) {
 	reqCli, err := requests.NewClient(context.Background())
 	if err != nil {
 		logrus.Error(err)
@@ -146,15 +154,16 @@ func (c *BingClient) Chat(question string) {
 		}
 		if msgType == websocket.MessageText {
 			msgData := tools.Any2json(msgContent)
-			logrus.Info("receive msgData: ", msgData)
 			switch msgData.Get("type").Int() {
 			case 1:
-				text := msgData.Get("arguments.0.messages.text").String()
-				runeText := []rune(text)
-				logrus.Info(runeText)
+				var chatResponse ChatResponse
+				json.Unmarshal(msgContent, &chatResponse)
+				chatItemHandler(ctx, chatResponse.Item, true)
 			case 2:
-				logrus.Info(msgData)
 				run = false
+				var chatResponse ChatResponse
+				json.Unmarshal(msgContent, &chatResponse)
+				chatItemHandler(ctx, chatResponse.Item, false)
 			}
 		}
 	}
