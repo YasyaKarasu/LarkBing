@@ -157,18 +157,12 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 			switch msgData.Get("type").Int() {
 			case 1:
 				var chatResponse ChatResponse
-				json.Unmarshal(msgContent, &chatResponse)
-				if len(chatResponse.Item.Messages) == 0 {
-					type temp struct {
-						Arguments []ChatMessage `json:"arguments"`
-					}
-					var t temp
-					json.Unmarshal(msgContent, &t)
-					chatResponse.Item = Item{
-						Messages:  t.Arguments,
-						RequestID: t.Arguments[0].RequestID,
-					}
+				for _, value := range msgData.Get("arguments").Array() {
+					var msg ChatMessage
+					json.Unmarshal([]byte(value.String()), &msg)
+					chatResponse.Item.Messages = append(chatResponse.Item.Messages, msg)
 				}
+				chatResponse.Item.RequestID = chatResponse.Item.Messages[0].RequestID
 				chatItemHandler(ctx, chatResponse.Item, true)
 			case 2:
 				run = false
