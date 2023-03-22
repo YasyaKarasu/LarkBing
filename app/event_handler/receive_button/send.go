@@ -1,7 +1,7 @@
 package receiveButton
 
 import (
-	"xlab-feishu-robot/pkg/global"
+	"LarkBing/pkg/global"
 
 	"github.com/YasyaKarasu/feishuapi"
 )

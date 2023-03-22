@@ -1,11 +1,11 @@
 package bing
 
 import (
+	"LarkBing/config"
+	"LarkBing/pkg/session"
 	"context"
 	"encoding/json"
 	"log"
-	"xlab-feishu-robot/config"
-	"xlab-feishu-robot/pkg/session"
 
 	"gitee.com/baixudong/gospider/requests"
 	"github.com/sirupsen/logrus"
@@ -16,12 +16,11 @@ type BingClient struct {
 	ConversationSignature string `json:"conversationSignature"`
 	ClientID              string `json:"clientId"`
 	IsStartofSession      bool   `json:"isStartOfSession"`
+	InvocationID          int    `json:"invocationId"`
 }
 
 func New() *BingClient {
-	reqCli, err := requests.NewClient(context.Background(), requests.ClientOption{
-		// Proxy: "http://127.0.0.1:7890",
-	})
+	reqCli, err := requests.NewClient(context.Background())
 	if err != nil {
 		log.Panic(err)
 	}
@@ -42,6 +41,7 @@ func New() *BingClient {
 		ConversationSignature: conversationSignature,
 		ClientID:              clientId,
 		IsStartofSession:      true,
+		InvocationID:          1,
 	}
 }
 
@@ -55,6 +55,8 @@ func GetBingClient(ID string) *BingClient {
 	} else {
 		var client BingClient
 		json.Unmarshal([]byte(clientRaw), &client)
+		client.IsStartofSession = false
+		client.InvocationID++
 		return &client
 	}
 }

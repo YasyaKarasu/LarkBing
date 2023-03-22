@@ -1,8 +1,8 @@
 package eventHandler
 
 import (
-	receiveMessage "xlab-feishu-robot/app/event_handler/receive_message"
-	eventDispatcher "xlab-feishu-robot/pkg/event_dispatcher"
+	receiveMessage "LarkBing/app/event_handler/receive_message"
+	eventDispatcher "LarkBing/pkg/event_dispatcher"
 )
 
 func Init() {

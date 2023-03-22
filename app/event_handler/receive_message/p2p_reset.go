@@ -1,8 +1,8 @@
 package receiveMessage
 
 import (
-	"xlab-feishu-robot/pkg/global"
-	"xlab-feishu-robot/pkg/session"
+	"LarkBing/pkg/global"
+	"LarkBing/pkg/session"
 
 	"github.com/YasyaKarasu/feishuapi"
 )

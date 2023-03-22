@@ -1,10 +1,10 @@
 package receiveMessage
 
 import (
+	"LarkBing/pkg/global"
+	messageCardDispatcher "LarkBing/pkg/message_card_dispatcher"
+	"LarkBing/pkg/session"
 	"encoding/json"
-	"xlab-feishu-robot/pkg/global"
-	messageCardDispatcher "xlab-feishu-robot/pkg/message_card_dispatcher"
-	"xlab-feishu-robot/pkg/session"
 
 	"github.com/YasyaKarasu/feishuapi"
 	_ "github.com/sirupsen/logrus"

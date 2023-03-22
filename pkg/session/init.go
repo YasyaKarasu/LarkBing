@@ -1,9 +1,9 @@
 package session
 
 import (
+	"LarkBing/config"
 	"context"
 	"fmt"
-	"xlab-feishu-robot/config"
 
 	"github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"

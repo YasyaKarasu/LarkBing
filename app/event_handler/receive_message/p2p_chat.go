@@ -1,7 +1,7 @@
 package receiveMessage
 
 import (
-	"xlab-feishu-robot/pkg/bing"
+	"LarkBing/pkg/bing"
 
 	"github.com/sirupsen/logrus"
 )

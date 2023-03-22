@@ -3,6 +3,7 @@ package bing
 import (
 	"context"
 	"encoding/json"
+	"strconv"
 
 	"gitee.com/baixudong/gospider/requests"
 	"gitee.com/baixudong/gospider/tools"
@@ -80,10 +81,13 @@ func (data *MessageData) WithText(text string) *MessageData {
 	return data
 }
 
+func (data *MessageData) WithInvocationID(id int) *MessageData {
+	data.InvocationID = strconv.Itoa(id)
+	return data
+}
+
 func (c *BingClient) Chat(question string) {
-	reqCli, err := requests.NewClient(context.Background(), requests.ClientOption{
-		// Proxy: "http://127.0.0.1:7890",
-	})
+	reqCli, err := requests.NewClient(context.Background())
 	if err != nil {
 		logrus.Error(err)
 		return
@@ -120,7 +124,7 @@ func (c *BingClient) Chat(question string) {
 		return
 	}
 
-	data := c.DefaultMessageData().WithText(question)
+	data := c.DefaultMessageData().WithText(question).WithInvocationID(c.InvocationID)
 	logrus.Info("send data: ", *data)
 	b, _ := json.Marshal(data)
 	err = wsCli.Send(
@@ -155,8 +159,3 @@ func (c *BingClient) Chat(question string) {
 		}
 	}
 }
-
-// func struct2map(s any, m any) {
-// 	b, _ := json.Marshal(s)
-// 	json.Unmarshal(b, m)
-// }

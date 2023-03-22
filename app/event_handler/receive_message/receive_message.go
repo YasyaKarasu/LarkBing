@@ -1,8 +1,8 @@
 package receiveMessage
 
 import (
+	"LarkBing/pkg/session"
 	"encoding/json"
-	"xlab-feishu-robot/pkg/session"
 
 	"github.com/sirupsen/logrus"
 )

@@ -1,8 +1,8 @@
 package app
 
 import (
-	eventHandler "xlab-feishu-robot/app/event_handler"
-	"xlab-feishu-robot/app/router"
+	eventHandler "LarkBing/app/event_handler"
+	"LarkBing/app/router"
 
 	"github.com/gin-gonic/gin"
 )

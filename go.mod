@@ -1,4 +1,4 @@
-module xlab-feishu-robot
+module LarkBing
 
 go 1.19
 

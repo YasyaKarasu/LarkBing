@@ -1,10 +1,10 @@
 package eventDispatcher
 
 import (
+	"LarkBing/config"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"xlab-feishu-robot/config"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

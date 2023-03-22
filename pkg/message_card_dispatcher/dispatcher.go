@@ -1,10 +1,10 @@
 package messageCardDispatcher
 
 import (
+	receiveButton "LarkBing/app/event_handler/receive_button"
+	"LarkBing/pkg/session"
 	"io"
 	"net/http"
-	receiveButton "xlab-feishu-robot/app/event_handler/receive_button"
-	"xlab-feishu-robot/pkg/session"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

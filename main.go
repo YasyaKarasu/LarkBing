@@ -1,12 +1,12 @@
 package main
 
 import (
+	"LarkBing/app"
+	"LarkBing/config"
+	"LarkBing/docs"
+	"LarkBing/pkg/global"
+	"LarkBing/pkg/session"
 	"fmt"
-	"xlab-feishu-robot/app"
-	"xlab-feishu-robot/config"
-	"xlab-feishu-robot/docs"
-	"xlab-feishu-robot/pkg/global"
-	"xlab-feishu-robot/pkg/session"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
