@@ -152,6 +152,7 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 			logrus.Error(err)
 			break
 		}
+		msgContent = msgContent[:len(msgContent)-1]
 		if msgType == websocket.MessageText {
 			msgData := tools.Any2json(msgContent)
 			switch msgData.Get("type").Int() {
