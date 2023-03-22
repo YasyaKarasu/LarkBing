@@ -20,7 +20,7 @@ type BingClient struct {
 
 func New() *BingClient {
 	reqCli, err := requests.NewClient(context.Background(), requests.ClientOption{
-		Proxy: "http://127.0.0.1:7890",
+		// Proxy: "http://127.0.0.1:7890",
 	})
 	if err != nil {
 		log.Panic(err)
