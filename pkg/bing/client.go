@@ -59,7 +59,8 @@ func GetBingClient(ID string) *BingClient {
 		json.Unmarshal([]byte(clientRaw), &client)
 		client.IsStartofSession = false
 		client.InvocationID++
-		session.SetSession(ID, clientRaw)
+		bytes, _ := json.Marshal(client)
+		session.SetSession(ID, string(bytes))
 		return &client
 	}
 }

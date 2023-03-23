@@ -16,7 +16,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func generateCard(item bing.Item, updating bool) string {
+func generateCard(item bing.Item, updating bool, invocationId int) string {
 	type element struct {
 		tag  string
 		text string
@@ -50,7 +50,7 @@ func generateCard(item bing.Item, updating bool) string {
 			if message.Author == "user" {
 				elements = append(elements, element{
 					tag:  "Note",
-					text: "🗣️ Question: " + message.Text,
+					text: "🗣️ Question: " + message.Text + " (" + strconv.Itoa(invocationId) + "/15)",
 				})
 			} else if message.Author == "bot" {
 				text := message.Text
@@ -112,7 +112,7 @@ func generateCard(item bing.Item, updating bool) string {
 		Header: Header{
 			Title: Title{
 				Tag:     "plain_text",
-				Content: "⚙️ Updating...",
+				Content: "⚙️ Updating..." + " (" + strconv.Itoa(invocationId) + "/15)",
 			},
 			Template: "blue",
 		},
@@ -265,11 +265,11 @@ func generateCard(item bing.Item, updating bool) string {
 	return string(bytes)
 }
 
-func SendCard(ctx context.Context, item bing.Item, updating bool) {
+func SendCard(ctx context.Context, item bing.Item, updating bool, invocationId int) {
 	if item.RequestID == "" {
 		return
 	}
-	card := generateCard(item, updating)
+	card := generateCard(item, updating, invocationId)
 	if mid := session.GetSessionString(item.RequestID); mid != "" {
 		global.Cli.UpdateMessage(mid, card)
 	} else {

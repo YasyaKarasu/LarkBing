@@ -87,7 +87,7 @@ func (data *MessageData) WithInvocationID(id int) *MessageData {
 	return data
 }
 
-type ChatItemHandler func(context.Context, Item, bool)
+type ChatItemHandler func(context.Context, Item, bool, int)
 
 var chatItemHandler ChatItemHandler
 
@@ -202,7 +202,7 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 				}
 				bytes, _ := json.Marshal(chatResponse.Item.Messages)
 				session.SetSession("messages_"+chatUpdate.Arguments[0].RequestID, string(bytes))
-				chatItemHandler(ctx, chatResponse.Item, true)
+				chatItemHandler(ctx, chatResponse.Item, true, c.InvocationID)
 			case 2:
 				run = false
 				var chatResponse ChatResponse
@@ -211,7 +211,7 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 					json.Unmarshal(msgContent[:len(msgContent)-30], &chatResponse)
 					// len("\x1e{\"type\":3,\"invocationId\":\"1\"}") = 30
 				}
-				chatItemHandler(ctx, chatResponse.Item, false)
+				chatItemHandler(ctx, chatResponse.Item, false, c.InvocationID)
 			}
 		}
 	}
