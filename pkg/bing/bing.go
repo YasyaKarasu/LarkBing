@@ -214,20 +214,17 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 					// len("\x1e{\"type\":3,\"invocationId\":\"1\"}") = 30
 				}
 				chatItemHandler(ctx, chatResponse.Item, false, c.InvocationID)
-			case 7:
-				if msgData.Get("allowReconnect").Bool() {
-					err = wsCli.Send(
-						context.Background(),
-						websocket.MessageText,
-						append(tools.StringToBytes(`{"type":6}`), 0x1e),
-					)
-					if err != nil {
-						logrus.Error(err)
-						return
-					}
-				}
 			default:
 				logrus.Info(string(msgContent))
+				err = wsCli.Send(
+					context.Background(),
+					websocket.MessageText,
+					append(tools.StringToBytes(`{"type":6}`), 0x1e),
+				)
+				if err != nil {
+					logrus.Error(err)
+					return
+				}
 			}
 		}
 	}
