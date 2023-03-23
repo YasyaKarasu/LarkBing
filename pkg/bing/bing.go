@@ -110,6 +110,7 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 	}
 
 	wsCli := response.WebSocket()
+	wsCli.SetReadLimit(327680)
 
 	err = wsCli.Send(
 		context.Background(),

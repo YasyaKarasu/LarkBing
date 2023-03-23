@@ -1,8 +1,9 @@
 package receiveMessage
 
 import (
-	"github.com/sirupsen/logrus"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 var groupMessageMap = make(map[string]messageHandler)
@@ -23,10 +24,11 @@ func groupTextMessage(messageevent *MessageEvent) {
 	logrus.WithFields(logrus.Fields{"message content": messageevent.Message.Content}).Info("Receive group TEXT message")
 
 	if handler, exists := groupMessageMap[messageevent.Message.Content]; exists {
-		handler(messageevent)
+		go handler(messageevent)
 		return
 	} else {
-		logrus.Error("Group message failed to find event handler: ", messageevent.Message.Content)
+		go groupChat(messageevent)
+		// logrus.Error("Group message failed to find event handler: ", messageevent.Message.Content)
 		return
 	}
 }
