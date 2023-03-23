@@ -170,13 +170,14 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 				}
 				var chatUpdate ChatUpdate
 				json.Unmarshal(msgContent, &chatUpdate)
-				storedMessages := make([]ChatMessage, 0)
-				if len(chatUpdate.Arguments) > 0 {
-					json.Unmarshal(
-						[]byte(session.GetSessionString("messages_"+chatUpdate.Arguments[0].RequestID)),
-						&storedMessages,
-					)
+				if len(chatUpdate.Arguments) == 0 {
+					continue
 				}
+				storedMessages := make([]ChatMessage, 0)
+				json.Unmarshal(
+					[]byte(session.GetSessionString("messages_"+chatUpdate.Arguments[0].RequestID)),
+					&storedMessages,
+				)
 				if len(storedMessages) == 0 {
 					chatResponse.Item = Item{
 						Messages:  chatUpdate.Arguments[0].Messages,
@@ -212,6 +213,8 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 					// len("\x1e{\"type\":3,\"invocationId\":\"1\"}") = 30
 				}
 				chatItemHandler(ctx, chatResponse.Item, false, c.InvocationID)
+			default:
+				logrus.Info(string(msgContent))
 			}
 		}
 	}
