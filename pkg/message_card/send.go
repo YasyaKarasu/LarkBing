@@ -275,7 +275,6 @@ func SendCard(ctx context.Context, item bing.Item, updating bool, invocationId i
 	if mid := session.GetSessionString(item.RequestID); mid != "" {
 		global.Cli.UpdateMessage(mid, card)
 	} else {
-		session.SetSession(item.RequestID, mid)
 		messageevent := ctx.Value("messageevent").(*receiveMessage.MessageEvent)
 		var mid string
 		var status messageCardDispatcher.MessageCardState
@@ -303,6 +302,7 @@ func SendCard(ctx context.Context, item bing.Item, updating bool, invocationId i
 				ChatType:   "group",
 			}
 		}
+		session.SetSession(item.RequestID, mid)
 		bytes, _ := json.Marshal(status)
 		session.SetSession(mid, string(bytes))
 	}
