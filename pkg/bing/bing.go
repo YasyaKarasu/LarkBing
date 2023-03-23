@@ -96,9 +96,7 @@ func RegisterChatResponseHandler(handler ChatItemHandler) {
 }
 
 func (c *BingClient) Chat(ctx context.Context, question string) {
-	reqCli, err := requests.NewClient(context.Background(), requests.ClientOption{
-		Proxy: "http://127.0.0.1:7890",
-	})
+	reqCli, err := requests.NewClient(context.Background())
 	if err != nil {
 		logrus.Error(err)
 		return
@@ -150,12 +148,14 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 	}
 
 	run := true
+	received := 0
 	for run {
 		msgType, msgContent, err := wsCli.Recv(context.Background())
 		if err != nil {
 			logrus.Error(err)
 			break
 		}
+		received++
 		msgContent = msgContent[:len(msgContent)-1]
 		if msgType == websocket.MessageText {
 			msgData := tools.Any2json(msgContent)
@@ -206,7 +206,10 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 				}
 				bytes, _ := json.Marshal(chatResponse.Item.Messages)
 				session.SetSession("messages_"+chatUpdate.Arguments[0].RequestID, string(bytes))
-				chatItemHandler(ctx, chatResponse.Item, true, c.InvocationID)
+				if received%10 == 0 {
+					go chatItemHandler(ctx, chatResponse.Item, true, c.InvocationID)
+					received = 0
+				}
 			case 2:
 				run = false
 				var chatResponse ChatResponse
