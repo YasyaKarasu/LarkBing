@@ -270,7 +270,7 @@ func SendCard(ctx context.Context, item bing.Item, updating bool) {
 	if mid := session.GetSessionString(item.RequestID); mid != "" {
 		global.Cli.UpdateMessage(mid, card)
 	} else {
-		messageevent := ctx.Value("messageevent").(receiveMessage.MessageEvent)
+		messageevent := ctx.Value("messageevent").(*receiveMessage.MessageEvent)
 		var mid string
 		var status messageCardDispatcher.MessageCardState
 		switch messageevent.Message.Chat_type {
