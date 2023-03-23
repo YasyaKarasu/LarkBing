@@ -207,7 +207,7 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 				bytes, _ := json.Marshal(chatResponse.Item.Messages)
 				session.SetSession("messages_"+chatUpdate.Arguments[0].RequestID, string(bytes))
 				if received%10 == 0 {
-					go chatItemHandler(ctx, chatResponse.Item, true, c.InvocationID)
+					chatItemHandler(ctx, chatResponse.Item, true, c.InvocationID)
 					received = 0
 				}
 			case 2:
