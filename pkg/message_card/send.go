@@ -239,10 +239,28 @@ func generateCard(item bing.Item, updating bool) string {
 		})
 	}
 
-	bytes, err := json.Marshal(result)
-	if err != nil {
-		logrus.Error(err)
-		return ""
+	type CardTemplateWithoutHeader struct {
+		Config   Config `json:"config"`
+		Elements []any  `json:"elements"`
+	}
+	var bytes []byte
+	var err error
+	if updating {
+		bytes, err = json.Marshal(result)
+		if err != nil {
+			logrus.Error(err)
+			return ""
+		}
+	} else {
+		resultWithoutHeader := CardTemplateWithoutHeader{
+			Config:   result.Config,
+			Elements: result.Elements,
+		}
+		bytes, err = json.Marshal(resultWithoutHeader)
+		if err != nil {
+			logrus.Error(err)
+			return ""
+		}
 	}
 	return string(bytes)
 }
