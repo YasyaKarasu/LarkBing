@@ -266,6 +266,9 @@ func generateCard(item bing.Item, updating bool) string {
 }
 
 func SendCard(ctx context.Context, item bing.Item, updating bool) {
+	if item.RequestID == "" {
+		return
+	}
 	card := generateCard(item, updating)
 	if mid := session.GetSessionString(item.RequestID); mid != "" {
 		global.Cli.UpdateMessage(mid, card)
