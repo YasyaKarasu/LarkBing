@@ -58,20 +58,22 @@ func generateCard(item bing.Item, updating bool, invocationId int) string {
 				suggestedItems = message.SuggestedResponses
 
 				reg := regexp.MustCompile(`\[\^[0-9]+\^\]`)
-				for index, val := range reg.FindAllString(message.Text, -1) {
+				for _, val := range reg.FindAllString(message.Text, -1) {
+					reg = regexp.MustCompile(`[0-9]+`)
+					index, _ := strconv.Atoi(reg.FindString(val))
 					if len(referenceItems) > index {
 						text = strings.Replace(text,
 							val,
-							"[["+strconv.Itoa(index+1)+"]]("+referenceItems[index].SeeMoreURL+")",
+							"[["+strconv.Itoa(index)+"]]("+referenceItems[index].SeeMoreURL+")",
 							-1,
 						)
 					} else {
-						text = strings.Replace(text, val, "["+strconv.Itoa(index+1)+"]", -1)
+						text = strings.Replace(text, val, "["+strconv.Itoa(index)+"]", -1)
 					}
 				}
 
-				reg = regexp.MustCompile(`\x60\x60\x60(\w+)\n`)
-				reg.ReplaceAllString(text, "  💾 Code:\n━━━━━━━━━━━━\n")
+				reg = regexp.MustCompile(`\x60\x60\x60(\w+)`)
+				reg.ReplaceAllString(text, "  💾 Code:\n━━━━━━━━━━━━")
 
 				text = strings.ReplaceAll(text, "```", "━━━━━━━━━━━━")
 
