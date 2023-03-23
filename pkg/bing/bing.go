@@ -171,7 +171,10 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 				var chatUpdate ChatUpdate
 				json.Unmarshal(msgContent, &chatUpdate)
 				var storedMessages []ChatMessage
-				json.Unmarshal([]byte(session.GetSessionString(chatUpdate.Arguments[0].RequestID)), &storedMessages)
+				json.Unmarshal(
+					[]byte(session.GetSessionString("messages_"+chatUpdate.Arguments[0].RequestID)),
+					&storedMessages,
+				)
 				if len(storedMessages) == 0 {
 					chatResponse.Item = Item{
 						Messages:  chatUpdate.Arguments[0].Messages,
@@ -195,6 +198,8 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 						}
 					}
 				}
+				bytes, _ := json.Marshal(chatResponse.Item.Messages)
+				session.SetSession("messages_"+chatUpdate.Arguments[0].RequestID, string(bytes))
 				chatItemHandler(ctx, chatResponse.Item, true)
 			case 2:
 				run = false
