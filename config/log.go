@@ -16,5 +16,6 @@ func SetupLogrus() {
 	if err != nil {
 		fmt.Println("Failed to create log file: ", logPath)
 	}
+	logrus.SetReportCaller(true)
 	logrus.SetOutput(io.MultiWriter(os.Stdout, logFile))
 }
