@@ -1,6 +1,7 @@
 package bing
 
 import (
+	"LarkBing/pkg/session"
 	"context"
 	"encoding/json"
 	"strconv"
@@ -169,9 +170,30 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 				}
 				var chatUpdate ChatUpdate
 				json.Unmarshal(msgContent, &chatUpdate)
-				chatResponse.Item = Item{
-					Messages:  chatUpdate.Arguments[0].Messages,
-					RequestID: chatUpdate.Arguments[0].RequestID,
+				var storedMessages []ChatMessage
+				json.Unmarshal([]byte(session.GetSessionString(chatUpdate.Arguments[0].RequestID)), &storedMessages)
+				if len(storedMessages) == 0 {
+					chatResponse.Item = Item{
+						Messages:  chatUpdate.Arguments[0].Messages,
+						RequestID: chatUpdate.Arguments[0].RequestID,
+					}
+				} else {
+					chatResponse.Item = Item{
+						Messages:  storedMessages,
+						RequestID: chatUpdate.Arguments[0].RequestID,
+					}
+					for _, newMsg := range chatUpdate.Arguments[0].Messages {
+						for j, oldMsg := range storedMessages {
+							if newMsg.MessageID == oldMsg.MessageID {
+								chatResponse.Item.Messages[j] = newMsg
+								break
+							} else {
+								if j == len(storedMessages)-1 {
+									chatResponse.Item.Messages = append(chatResponse.Item.Messages, newMsg)
+								}
+							}
+						}
+					}
 				}
 				chatItemHandler(ctx, chatResponse.Item, true)
 			case 2:
@@ -179,8 +201,8 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 				var chatResponse ChatResponse
 				err := json.Unmarshal(msgContent, &chatResponse)
 				if err != nil {
-					json.Unmarshal(msgContent[:len(msgContent)-29], &chatResponse)
-					// len("{"type":3,"invocationId":"1"}") = 29
+					json.Unmarshal(msgContent[:len(msgContent)-30], &chatResponse)
+					// len("\x1e{\"type\":3,\"invocationId\":\"1\"}") = 30
 				}
 				chatItemHandler(ctx, chatResponse.Item, false)
 			}
