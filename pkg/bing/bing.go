@@ -177,7 +177,11 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 			case 2:
 				run = false
 				var chatResponse ChatResponse
-				json.Unmarshal(msgContent, &chatResponse)
+				err := json.Unmarshal(msgContent, &chatResponse)
+				if err != nil {
+					json.Unmarshal(msgContent[:len(msgContent)-29], &chatResponse)
+					// len("{"type":3,"invocationId":"1"}") = 29
+				}
 				chatItemHandler(ctx, chatResponse.Item, false)
 			}
 		}
