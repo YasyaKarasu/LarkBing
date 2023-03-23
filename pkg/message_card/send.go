@@ -59,21 +59,21 @@ func generateCard(item bing.Item, updating bool) string {
 
 				reg := regexp.MustCompile(`\[\^[0-9]+\^\]`)
 				for index, val := range reg.FindAllString(message.Text, -1) {
-					if len(referenceItems) >= index {
+					if len(referenceItems) > index {
 						text = strings.Replace(text,
 							val,
-							"[["+strconv.Itoa(index)+"]]("+referenceItems[index-1].SeeMoreURL+")",
+							"[["+strconv.Itoa(index+1)+"]]("+referenceItems[index].SeeMoreURL+")",
 							-1,
 						)
 					} else {
-						text = strings.Replace(text, val, "["+strconv.Itoa(index)+"]", -1)
+						text = strings.Replace(text, val, "["+strconv.Itoa(index+1)+"]", -1)
 					}
 				}
 
 				reg = regexp.MustCompile(`\x60\x60\x60(\w+)\n`)
 				reg.ReplaceAllString(text, "  💾 Code:\n━━━━━━━━━━━━\n")
 
-				text = strings.ReplaceAll(text, "```", "\n━━━━━━━━━━━━")
+				text = strings.ReplaceAll(text, "```", "━━━━━━━━━━━━")
 
 				elements = append(elements, element{
 					tag:  "Answer",
@@ -273,6 +273,7 @@ func SendCard(ctx context.Context, item bing.Item, updating bool) {
 	if mid := session.GetSessionString(item.RequestID); mid != "" {
 		global.Cli.UpdateMessage(mid, card)
 	} else {
+		logrus.Info(updating)
 		messageevent := ctx.Value("messageevent").(*receiveMessage.MessageEvent)
 		var mid string
 		var status messageCardDispatcher.MessageCardState
