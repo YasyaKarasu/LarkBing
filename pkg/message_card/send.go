@@ -72,7 +72,7 @@ func generateCard(item bing.Item, updating bool, invocationId int) string {
 					}
 				}
 
-				reg = regexp.MustCompile(`\x60\x60\x60(\w+)`)
+				reg = regexp.MustCompile("```(\\w+)")
 				reg.ReplaceAllString(text, "  💾 Code:\n━━━━━━━━━━━━")
 
 				text = strings.ReplaceAll(text, "```", "━━━━━━━━━━━━")
