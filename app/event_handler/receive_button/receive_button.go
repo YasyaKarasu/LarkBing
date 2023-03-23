@@ -3,6 +3,8 @@ package receiveButton
 import (
 	"LarkBing/pkg/session"
 	"encoding/json"
+
+	"github.com/sirupsen/logrus"
 )
 
 type messageCardState struct {
@@ -11,6 +13,7 @@ type messageCardState struct {
 }
 
 func Receive(OpenMessageId string, action map[string]any) {
+	logrus.Info(action)
 	value := action["value"].(map[string]any)
 	var messageState messageCardState
 	json.Unmarshal([]byte(session.GetSessionString(OpenMessageId)), &messageState)

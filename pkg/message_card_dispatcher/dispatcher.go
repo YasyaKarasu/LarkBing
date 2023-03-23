@@ -36,13 +36,14 @@ func Dispatcher(c *gin.Context) {
 	}
 
 	// dispatch events
-	receiveButton.Receive(req.OpenMessageId, req.Action)
+	go receiveButton.Receive(req.OpenMessageId, req.Action)
+	c.JSON(http.StatusOK, "OK")
 }
 
 func requestRepeatDetect(c *gin.Context) bool {
 	refreshToken := c.Request.Header.Get("X-Refresh-Token")
 	_, ok := session.GetSessionBool(refreshToken)
-	if ok {
+	if !ok {
 		session.SetSession(refreshToken, true)
 		return false
 	} else {
