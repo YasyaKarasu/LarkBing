@@ -61,10 +61,10 @@ func generateCard(item bing.Item, updating bool, invocationId int) string {
 				for _, val := range reg.FindAllString(message.Text, -1) {
 					reg = regexp.MustCompile(`[0-9]+`)
 					index, _ := strconv.Atoi(reg.FindString(val))
-					if len(referenceItems) > index {
+					if len(referenceItems) >= index {
 						text = strings.Replace(text,
 							val,
-							"[["+strconv.Itoa(index)+"]]("+referenceItems[index].SeeMoreURL+")",
+							"[["+strconv.Itoa(index)+"]]("+referenceItems[index-1].SeeMoreURL+")",
 							-1,
 						)
 					} else {
