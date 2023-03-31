@@ -54,7 +54,9 @@ type PreviousMessage struct {
 }
 
 func (c *BingClient) DefaultJailBreakMessageData(ctx context.Context, question string) ([]PreviousMessage, *MessageData) {
-	messageevent := ctx.Value("messageevent").(*MessageEvent)
+	var messageevent MessageEvent
+	b := ctx.Value("messageevent").([]byte)
+	json.Unmarshal(b, &messageevent)
 	str := session.GetSessionString("jailbreak_" + messageevent.Message.Chat_id)
 	previousCachedMessages := make([]PreviousMessage, 0)
 	if str != "" {
@@ -285,8 +287,10 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 						})
 					}
 				}
-				messageevent := ctx.Value("messageevent").(*MessageEvent)
-				b, _ := json.Marshal(pre)
+				var messageevent MessageEvent
+				b := ctx.Value("messageevent").([]byte)
+				json.Unmarshal(b, &messageevent)
+				b, _ = json.Marshal(pre)
 				session.SetSession("jailbreak_"+messageevent.Message.Chat_id, string(b))
 			default:
 				logrus.Info(string(msgContent))
