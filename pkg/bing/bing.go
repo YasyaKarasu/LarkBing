@@ -195,7 +195,7 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 	}
 
 	pre, data := c.DefaultJailBreakMessageData(ctx, question)
-	logrus.Info("send data: ", *data)
+	// logrus.Info("send data: ", *data)
 	b, _ := json.Marshal(data)
 	err = wsCli.Send(
 		context.Background(),
