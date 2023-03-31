@@ -283,8 +283,8 @@ func SendCard(ctx context.Context, item bing.Item, updating bool, invocationId i
 		switch messageevent.Message.Chat_type {
 		case "p2p":
 			mid, _ = global.Cli.MessageSend(
-				feishuapi.UserOpenId,
-				messageevent.Sender.Sender_id.Open_id,
+				feishuapi.GroupChatId,
+				messageevent.Message.Chat_id,
 				feishuapi.Interactive,
 				card,
 			)
