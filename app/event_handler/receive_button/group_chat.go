@@ -4,6 +4,7 @@ import (
 	receiveMessage "LarkBing/app/event_handler/receive_message"
 	"LarkBing/pkg/bing"
 	"context"
+	"encoding/json"
 
 	"github.com/sirupsen/logrus"
 )
@@ -17,8 +18,9 @@ func groupChat(operatorId string, message string) {
 		logrus.Error("failed to get bing client")
 		return
 	}
+	b, _ := json.Marshal(messageevent)
 	bingCli.Chat(
-		context.WithValue(context.Background(), "messageevent", &messageevent),
+		context.WithValue(context.Background(), "messageevent", b),
 		message,
 	)
 }
