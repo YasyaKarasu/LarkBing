@@ -114,7 +114,7 @@ func generateCard(item bing.Item, updating bool, invocationId int) string {
 		Header: Header{
 			Title: Title{
 				Tag:     "plain_text",
-				Content: "⚙️ Updating..." + " (" + strconv.Itoa(invocationId) + "/15)",
+				Content: "⚙️ Updating...",
 			},
 			Template: "blue",
 		},
@@ -289,7 +289,7 @@ func SendCard(ctx context.Context, item bing.Item, updating bool, invocationId i
 				card,
 			)
 			status = messageCardDispatcher.MessageCardState{
-				OperatorId: messageevent.Sender.Sender_id.Open_id,
+				OperatorId: messageevent.Message.Chat_id,
 				ChatType:   "p2p",
 			}
 		case "group":

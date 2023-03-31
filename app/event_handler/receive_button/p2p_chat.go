@@ -11,7 +11,7 @@ import (
 
 func p2pChat(operatorId string, message string) {
 	messageevent := receiveMessage.MessageEvent{}
-	messageevent.Sender.Sender_id.Open_id = operatorId
+	messageevent.Message.Chat_id = operatorId
 	messageevent.Message.Chat_type = "p2p"
 	bingCli := bing.New()
 	if bingCli == nil {
