@@ -2,9 +2,7 @@ package bing
 
 import (
 	"LarkBing/config"
-	"LarkBing/pkg/session"
 	"context"
-	"encoding/json"
 	"log"
 
 	"gitee.com/baixudong/gospider/requests"
@@ -44,23 +42,5 @@ func New() *BingClient {
 		ClientID:              clientId,
 		IsStartofSession:      true,
 		InvocationID:          1,
-	}
-}
-
-func GetBingClient(ID string) *BingClient {
-	clientRaw := session.GetSessionString(ID)
-	if clientRaw == "" {
-		client := New()
-		bytes, _ := json.Marshal(client)
-		session.SetSession(ID, string(bytes))
-		return client
-	} else {
-		var client BingClient
-		json.Unmarshal([]byte(clientRaw), &client)
-		client.IsStartofSession = false
-		client.InvocationID++
-		bytes, _ := json.Marshal(client)
-		session.SetSession(ID, string(bytes))
-		return &client
 	}
 }
