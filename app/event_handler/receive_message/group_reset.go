@@ -12,6 +12,6 @@ func init() {
 }
 
 func groupReset(messageevent *MessageEvent) {
-	session.ClearSession(messageevent.Message.Chat_id)
+	session.ClearSession("jailbreak_" + messageevent.Message.Chat_id)
 	global.Cli.MessageSend(feishuapi.GroupChatId, messageevent.Message.Chat_id, feishuapi.Text, "重置成功！")
 }

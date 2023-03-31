@@ -12,6 +12,6 @@ func init() {
 }
 
 func p2pReset(messageevent *MessageEvent) {
-	session.ClearSession(messageevent.Sender.Sender_id.Open_id)
+	session.ClearSession("jailbreak_" + messageevent.Message.Chat_id)
 	global.Cli.MessageSend(feishuapi.UserOpenId, messageevent.Sender.Sender_id.Open_id, feishuapi.Text, "重置成功！")
 }
