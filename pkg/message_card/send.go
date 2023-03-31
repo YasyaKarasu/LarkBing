@@ -275,7 +275,9 @@ func SendCard(ctx context.Context, item bing.Item, updating bool, invocationId i
 	if mid := session.GetSessionString(item.RequestID); mid != "" {
 		global.Cli.UpdateMessage(mid, card)
 	} else {
-		messageevent := ctx.Value("messageevent").(*receiveMessage.MessageEvent)
+		var messageevent receiveMessage.MessageEvent
+		b := ctx.Value("messageevent").([]byte)
+		json.Unmarshal(b, &messageevent)
 		var mid string
 		var status messageCardDispatcher.MessageCardState
 		switch messageevent.Message.Chat_type {
