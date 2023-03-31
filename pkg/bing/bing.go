@@ -147,7 +147,7 @@ func (data *MessageData) WithInvocationID(id int) *MessageData {
 	return data
 }
 
-type ChatItemHandler func(context.Context, Item, bool, int)
+type ChatItemHandler func(context.Context, string, Item, bool, int)
 
 var chatItemHandler ChatItemHandler
 
@@ -267,7 +267,7 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 				bytes, _ := json.Marshal(chatResponse.Item.Messages)
 				session.SetSession("messages_"+chatUpdate.Arguments[0].RequestID, string(bytes))
 				if received%5 == 0 {
-					chatItemHandler(ctx, chatResponse.Item, true, c.InvocationID)
+					chatItemHandler(ctx, question, chatResponse.Item, true, c.InvocationID)
 					received = 0
 				}
 			case 2:
@@ -278,7 +278,7 @@ func (c *BingClient) Chat(ctx context.Context, question string) {
 					json.Unmarshal(msgContent[:len(msgContent)-30], &chatResponse)
 					// len("\x1e{\"type\":3,\"invocationId\":\"1\"}") = 30
 				}
-				chatItemHandler(ctx, chatResponse.Item, false, c.InvocationID)
+				chatItemHandler(ctx, question, chatResponse.Item, false, c.InvocationID)
 				for _, message := range chatResponse.Item.Messages {
 					if message.MessageType == "" && message.Author == "bot" {
 						pre = append(pre, PreviousMessage{

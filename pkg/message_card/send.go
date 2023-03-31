@@ -16,7 +16,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func generateCard(item bing.Item, updating bool, invocationId int) string {
+func generateCard(question string, item bing.Item, updating bool, invocationId int) string {
 	type element struct {
 		tag  string
 		text string
@@ -26,6 +26,10 @@ func generateCard(item bing.Item, updating bool, invocationId int) string {
 	var referenceItems []bing.SourceAttribution
 	var suggestedItems []bing.SuggestedResponse
 
+	elements = append(elements, element{
+		tag:  "Note",
+		text: "🗣️ Question: " + question,
+	})
 	for _, message := range item.Messages {
 		if message.MessageType == "InternalSearchResult" || message.MessageType == "RenderCardRequest" || message.Text == "" {
 			continue
@@ -50,7 +54,7 @@ func generateCard(item bing.Item, updating bool, invocationId int) string {
 			if message.Author == "user" {
 				elements = append(elements, element{
 					tag:  "Note",
-					text: "🗣️ Question: " + message.Text + " (" + strconv.Itoa(invocationId) + "/15)",
+					text: "🗣️ Question: " + message.Text,
 				})
 			} else if message.Author == "bot" {
 				text := message.Text
@@ -267,11 +271,11 @@ func generateCard(item bing.Item, updating bool, invocationId int) string {
 	return string(bytes)
 }
 
-func SendCard(ctx context.Context, item bing.Item, updating bool, invocationId int) {
+func SendCard(ctx context.Context, question string, item bing.Item, updating bool, invocationId int) {
 	if item.RequestID == "" {
 		return
 	}
-	card := generateCard(item, updating, invocationId)
+	card := generateCard(question, item, updating, invocationId)
 	if mid := session.GetSessionString(item.RequestID); mid != "" {
 		global.Cli.UpdateMessage(mid, card)
 	} else {
