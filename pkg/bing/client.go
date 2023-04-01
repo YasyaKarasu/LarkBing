@@ -6,7 +6,6 @@ import (
 	"log"
 
 	"gitee.com/baixudong/gospider/requests"
-	"github.com/sirupsen/logrus"
 )
 
 type BingClient struct {
@@ -31,7 +30,7 @@ func New() *BingClient {
 		log.Panic(err)
 	}
 	jsonData := response.Json()
-	logrus.Info(jsonData)
+	// logrus.Info(jsonData)
 	conversationId := jsonData.Get("conversationId").String()
 	clientId := jsonData.Get("clientId").String()
 	conversationSignature := jsonData.Get("conversationSignature").String()
