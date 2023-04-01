@@ -29,7 +29,7 @@ type MessageEvent struct {
 		Chat_type    string `json:"chat_type"`
 		Message_type string `json:"message_type"`
 		Content      string `json:"content"`
-		Metions      struct {
+		Mentions     []struct {
 			Key string `json:"key"`
 			Id  struct {
 				Union_id string `json:"union_id"`
@@ -38,7 +38,7 @@ type MessageEvent struct {
 			} `json:"id"`
 			Name       string `json:"name"`
 			Tenant_key string `json:"tenant_key"`
-		} `json:"metions"`
+		} `json:"mentions"`
 	} `json:"message"`
 }
 
@@ -52,6 +52,18 @@ func Receive(event map[string]any) {
 		return
 	}
 	session.StoreMessageID(messageevent.Message.Message_id)
+
+	flag := true
+	for _, mention := range messageevent.Message.Mentions {
+		if mention.Key == "@all" {
+			flag = false
+			break
+		}
+	}
+	if !flag {
+		logrus.WithField("messageID", messageevent.Message.Message_id).Warn("Receive message, but this message contains @all")
+		return
+	}
 
 	switch messageevent.Message.Chat_type {
 	case "p2p":
